@@ -98,7 +98,9 @@ for (const t of tools) {
 	}
 
 	// Validate duplicated positioning proof identityChain matches
-	if (m.authored.identityChain !== m.authored.positioning?.proof?.identityChain) {
+	if (
+		m.authored.identityChain !== m.authored.positioning?.proof?.identityChain
+	) {
 		fail(
 			`authored.identityChain ("${m.authored.identityChain}") and authored.positioning.proof.identityChain ("${m.authored.positioning?.proof?.identityChain}") are out of sync.`,
 		);
@@ -134,10 +136,7 @@ for (const t of tools) {
 				);
 			}
 			// Enforce: shipped features must have their tools in mcp-server README
-			if (
-				f.surfacesWhenShipped?.includes("mcp.tool-list") &&
-				f.addsMcpTools
-			) {
+			if (f.surfacesWhenShipped?.includes("mcp.tool-list") && f.addsMcpTools) {
 				const mcpReadme = read("packages/mcp-server/README.md");
 				for (const tool of f.addsMcpTools) {
 					if (!mcpReadme.includes(`\`${tool}\``)) {
@@ -149,10 +148,7 @@ for (const t of tools) {
 			}
 		} else {
 			// Enforce: non-shipped features must NOT be advertised in README "What you get"
-			if (
-				f.addsSignalType &&
-				whatYouGet.includes(f.addsSignalType)
-			) {
+			if (f.addsSignalType && whatYouGet.includes(f.addsSignalType)) {
 				fail(
 					`feature "${f.id}" is status="${f.status}" but its signal "${f.addsSignalType}" is advertised in README "What you get"`,
 				);
@@ -233,6 +229,77 @@ for (const t of tools) {
 			fail(
 				`manifest.json approvalState has extra value \`${v}\` (not defined in obs-types constants.ts)`,
 			);
+		}
+	}
+}
+
+// 11. Comparison axes (RFC 0012 extension) — landing-page comparison rows must
+// be governed by the manifest and tied to valid feature/capability records.
+{
+	const comparison = m.authored.positioning?.comparison;
+	const axes = comparison?.axes ?? [];
+	const vendorKeys = (comparison?.agentRows ?? []).map((r) => r.key);
+	const axisIds = new Set();
+	const capabilities = new Map(
+		(m.authored.capabilities ?? []).map((c) => [c.id, c]),
+	);
+	const features = new Map((m.authored.features ?? []).map((f) => [f.id, f]));
+	const validTones = new Set(["yes", "no", "partial", "neutral", undefined]);
+
+	if (axes.length === 0) {
+		fail(
+			"manifest comparison has no axes; landing-page rows would be ungoverned",
+		);
+	}
+	for (const axis of axes) {
+		if (axisIds.has(axis.id)) {
+			fail(`comparison axis id "${axis.id}" is duplicated`);
+		}
+		axisIds.add(axis.id);
+
+		if (!axis.label) {
+			fail(`comparison axis "${axis.id}" is missing label`);
+		}
+		if (axis.capabilityId) {
+			const capability = capabilities.get(axis.capabilityId);
+			if (!capability) {
+				fail(
+					`comparison axis "${axis.id}" references unknown capabilityId "${axis.capabilityId}"`,
+				);
+			} else if (capability.status !== "shipped") {
+				fail(
+					`comparison axis "${axis.id}" references capability "${axis.capabilityId}" with status="${capability.status}"`,
+				);
+			}
+		}
+		if (axis.featureId) {
+			const feature = features.get(axis.featureId);
+			if (!feature) {
+				fail(
+					`comparison axis "${axis.id}" references unknown featureId "${axis.featureId}"`,
+				);
+			} else if (feature.status !== "shipped") {
+				fail(
+					`comparison axis "${axis.id}" references feature "${axis.featureId}" with status="${feature.status}"`,
+				);
+			}
+		}
+		for (const key of vendorKeys) {
+			const cell = axis.cells?.[key];
+			if (!cell) {
+				fail(
+					`comparison axis "${axis.id}" is missing cell for vendor "${key}"`,
+				);
+				continue;
+			}
+			if (typeof cell.v !== "string" || cell.v.length === 0) {
+				fail(`comparison axis "${axis.id}" has empty cell value for "${key}"`);
+			}
+			if (!validTones.has(cell.tone)) {
+				fail(
+					`comparison axis "${axis.id}" cell "${key}" has invalid tone "${cell.tone}"`,
+				);
+			}
 		}
 	}
 }
