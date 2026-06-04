@@ -51,7 +51,53 @@ const AUTHORED_SEED = {
 				"Cloudflare Workers with D1/R2, or run the Node collector on any cloud with Postgres and S3-compatible storage.",
 		},
 		comparison: {
-			headline: "One stack instead of three (or nine)",
+			headline: "One stack, scored against the market",
+			agentRows: [
+				{
+					name: "Observability Unified",
+					key: "obs",
+				},
+				{
+					name: "Datadog",
+					key: "datadog",
+				},
+				{
+					name: "Sentry",
+					key: "sentry",
+				},
+				{
+					name: "PostHog",
+					key: "posthog",
+				},
+				{
+					name: "Honeycomb",
+					key: "honeycomb",
+				},
+				{
+					name: "New Relic",
+					key: "newrelic",
+				},
+				{
+					name: "Grafana Cloud",
+					key: "grafana",
+				},
+				{
+					name: "SigNoz",
+					key: "signoz",
+				},
+				{
+					name: "Uptrace",
+					key: "uptrace",
+				},
+				{
+					name: "HyperDX",
+					key: "hyperdx",
+				},
+				{
+					name: "Groundcover",
+					key: "groundcover",
+				},
+			],
 			axes: [
 				{
 					id: "hosting-model",
@@ -107,6 +153,11 @@ const AUTHORED_SEED = {
 							tone: "partial",
 							ref: "hx-hosting",
 						},
+						groundcover: {
+							v: "BYOC or full on-prem",
+							tone: "yes",
+							ref: "gc-hosting",
+						},
 					},
 				},
 				{
@@ -161,6 +212,11 @@ const AUTHORED_SEED = {
 							v: "$20 flat + $0.40/GB",
 							tone: "partial",
 							ref: "hx-pricing",
+						},
+						groundcover: {
+							v: "Per host",
+							tone: "partial",
+							ref: "gc-pricing",
 						},
 					},
 				},
@@ -218,6 +274,11 @@ const AUTHORED_SEED = {
 							tone: "yes",
 							ref: "hx-otlp",
 						},
+						groundcover: {
+							v: "eBPF APM + OTLP",
+							tone: "yes",
+							ref: "gc-apm",
+						},
 					},
 				},
 				{
@@ -273,6 +334,376 @@ const AUTHORED_SEED = {
 							v: "Yes · ClickHouse-backed",
 							tone: "yes",
 							ref: "hx-logs",
+						},
+						groundcover: {
+							v: "Yes + Kubernetes context",
+							tone: "yes",
+							ref: "gc-logs",
+						},
+					},
+				},
+				{
+					id: "metrics-infra",
+					label: "Metrics / infra monitoring",
+					capabilityId: "metrics",
+					cells: {
+						obs: {
+							v: "Core metrics + infra signals",
+							tone: "partial",
+						},
+						datadog: {
+							v: "Infra + custom metrics",
+							tone: "yes",
+							ref: "dd-alerts",
+						},
+						sentry: {
+							v: "Application metrics",
+							tone: "partial",
+							ref: "se-pricing",
+						},
+						posthog: {
+							v: "Product/event metrics",
+							tone: "partial",
+							ref: "ph-pa",
+						},
+						honeycomb: {
+							v: "Derived metrics from events",
+							tone: "partial",
+							ref: "hc-correlation",
+						},
+						newrelic: {
+							v: "Infrastructure + custom metrics",
+							tone: "yes",
+							ref: "nr-alerts",
+						},
+						grafana: {
+							v: "Prometheus/Mimir metrics",
+							tone: "yes",
+							ref: "gr-pricing",
+						},
+						signoz: {
+							v: "Metrics explorer",
+							tone: "yes",
+							ref: "sn-alerts",
+						},
+						uptrace: {
+							v: "Metrics + dashboards",
+							tone: "yes",
+							ref: "up-alerts",
+						},
+						hyperdx: {
+							v: "Metrics via ClickStack",
+							tone: "partial",
+							ref: "hx-correlation",
+						},
+						groundcover: {
+							v: "Infra + custom metrics",
+							tone: "yes",
+							ref: "gc-metrics",
+						},
+					},
+				},
+				{
+					id: "profiling",
+					label: "Continuous profiling",
+					capabilityId: "profiles",
+					cells: {
+						obs: {
+							v: "CPU/off-CPU profiles",
+							tone: "yes",
+						},
+						datadog: {
+							v: "Continuous Profiler",
+							tone: "yes",
+							ref: "dd-profiling",
+						},
+						sentry: {
+							v: "Profiling add-on",
+							tone: "yes",
+							ref: "se-profiling",
+						},
+						posthog: {
+							v: "—",
+							tone: "no",
+							ref: "ph-profiling",
+						},
+						honeycomb: {
+							v: "—",
+							tone: "no",
+							ref: "hc-profiling",
+						},
+						newrelic: {
+							v: "APM profiling",
+							tone: "yes",
+							ref: "nr-profiling",
+						},
+						grafana: {
+							v: "Pyroscope profiles",
+							tone: "yes",
+							ref: "gr-profiling",
+						},
+						signoz: {
+							v: "—",
+							tone: "no",
+							ref: "sn-profiling",
+						},
+						uptrace: {
+							v: "—",
+							tone: "no",
+							ref: "up-profiling",
+						},
+						hyperdx: {
+							v: "—",
+							tone: "no",
+							ref: "hx-profiling",
+						},
+						groundcover: {
+							v: "Not positioned",
+							tone: "no",
+							ref: "gc-profiling",
+						},
+					},
+				},
+				{
+					id: "rum-frontend",
+					label: "RUM / frontend monitoring",
+					capabilityId: "replay",
+					cells: {
+						obs: {
+							v: "Replay + usage events",
+							tone: "partial",
+						},
+						datadog: {
+							v: "Browser/mobile RUM",
+							tone: "yes",
+							ref: "dd-replay",
+						},
+						sentry: {
+							v: "Frontend errors + replay",
+							tone: "yes",
+							ref: "se-replay",
+						},
+						posthog: {
+							v: "Web analytics + replay",
+							tone: "yes",
+							ref: "ph-replay",
+						},
+						honeycomb: {
+							v: "Frontend Observability",
+							tone: "partial",
+							ref: "hc-replay",
+						},
+						newrelic: {
+							v: "Browser monitoring",
+							tone: "yes",
+							ref: "nr-replay",
+						},
+						grafana: {
+							v: "Frontend Observability",
+							tone: "yes",
+							ref: "gr-replay",
+						},
+						signoz: {
+							v: "—",
+							tone: "no",
+							ref: "sn-replay",
+						},
+						uptrace: {
+							v: "—",
+							tone: "no",
+							ref: "up-replay",
+						},
+						hyperdx: {
+							v: "Replay + frontend sessions",
+							tone: "yes",
+							ref: "hx-replay",
+						},
+						groundcover: {
+							v: "BYOC RUM",
+							tone: "yes",
+							ref: "gc-rum",
+						},
+					},
+				},
+				{
+					id: "error-tracking",
+					label: "Error tracking",
+					capabilityId: "logs",
+					cells: {
+						obs: {
+							v: "Logs/traces, not issue inbox",
+							tone: "partial",
+						},
+						datadog: {
+							v: "Error Tracking",
+							tone: "yes",
+							ref: "dd-errors",
+						},
+						sentry: {
+							v: "Core product",
+							tone: "yes",
+							ref: "se-errors",
+						},
+						posthog: {
+							v: "Error tracking beta",
+							tone: "partial",
+							ref: "ph-errors",
+						},
+						honeycomb: {
+							v: "Via traces/events",
+							tone: "partial",
+							ref: "hc-correlation",
+						},
+						newrelic: {
+							v: "Errors inbox",
+							tone: "yes",
+							ref: "nr-errors",
+						},
+						grafana: {
+							v: "Frontend exceptions",
+							tone: "partial",
+							ref: "gr-replay",
+						},
+						signoz: {
+							v: "Exceptions view",
+							tone: "partial",
+							ref: "sn-errors",
+						},
+						uptrace: {
+							v: "Error monitoring",
+							tone: "yes",
+							ref: "up-alerts",
+						},
+						hyperdx: {
+							v: "Error search + alerts",
+							tone: "partial",
+							ref: "hx-alerts",
+						},
+						groundcover: {
+							v: "Frontend exceptions",
+							tone: "partial",
+							ref: "gc-rum",
+						},
+					},
+				},
+				{
+					id: "synthetics-uptime",
+					label: "Synthetics / uptime",
+					capabilityId: "alerts",
+					cells: {
+						obs: {
+							v: "—",
+							tone: "no",
+						},
+						datadog: {
+							v: "Synthetics + uptime",
+							tone: "yes",
+							ref: "dd-alerts",
+						},
+						sentry: {
+							v: "Uptime monitors",
+							tone: "partial",
+							ref: "se-alerts",
+						},
+						posthog: {
+							v: "—",
+							tone: "no",
+							ref: "ph-alerts",
+						},
+						honeycomb: {
+							v: "—",
+							tone: "no",
+							ref: "hc-alerts",
+						},
+						newrelic: {
+							v: "Synthetic monitoring",
+							tone: "yes",
+							ref: "nr-synthetics",
+						},
+						grafana: {
+							v: "Synthetic Monitoring",
+							tone: "yes",
+							ref: "gr-synthetics",
+						},
+						signoz: {
+							v: "—",
+							tone: "no",
+							ref: "sn-alerts",
+						},
+						uptrace: {
+							v: "Uptime monitoring",
+							tone: "yes",
+							ref: "up-alerts",
+						},
+						hyperdx: {
+							v: "—",
+							tone: "no",
+							ref: "hx-alerts",
+						},
+						groundcover: {
+							v: "Not positioned",
+							tone: "no",
+							ref: "gc-alerts",
+						},
+					},
+				},
+				{
+					id: "ebpf-kubernetes-auto-instrumentation",
+					label: "eBPF / Kubernetes auto-instrumentation",
+					cells: {
+						obs: {
+							v: "OTel SDK/collector based",
+							tone: "no",
+						},
+						datadog: {
+							v: "Agent + Universal Service Monitoring",
+							tone: "partial",
+							ref: "dd-correlation",
+						},
+						sentry: {
+							v: "SDK/framework based",
+							tone: "no",
+							ref: "se-otlp",
+						},
+						posthog: {
+							v: "SDK/event based",
+							tone: "no",
+							ref: "ph-traces",
+						},
+						honeycomb: {
+							v: "OTel instrumentation",
+							tone: "no",
+							ref: "hc-otlp",
+						},
+						newrelic: {
+							v: "Agent/OTel instrumentation",
+							tone: "partial",
+							ref: "nr-otlp",
+						},
+						grafana: {
+							v: "Alloy/OTel pipelines",
+							tone: "partial",
+							ref: "gr-otlp",
+						},
+						signoz: {
+							v: "OTel instrumentation",
+							tone: "no",
+							ref: "sn-otlp",
+						},
+						uptrace: {
+							v: "OTel instrumentation",
+							tone: "no",
+							ref: "up-otlp",
+						},
+						hyperdx: {
+							v: "OTel/OpenLLMetry",
+							tone: "no",
+							ref: "hx-otlp",
+						},
+						groundcover: {
+							v: "eBPF sensor, zero code",
+							tone: "yes",
+							ref: "gc-ebpf",
 						},
 					},
 				},
@@ -330,6 +761,11 @@ const AUTHORED_SEED = {
 							tone: "partial",
 							ref: "hx-llm",
 						},
+						groundcover: {
+							v: "Not positioned",
+							tone: "no",
+							ref: "gc-llm",
+						},
 					},
 				},
 				{
@@ -385,6 +821,11 @@ const AUTHORED_SEED = {
 							v: "Yes · auto-linked",
 							tone: "yes",
 							ref: "hx-replay",
+						},
+						groundcover: {
+							v: "RUM session recording",
+							tone: "yes",
+							ref: "gc-rum",
 						},
 					},
 				},
@@ -442,6 +883,11 @@ const AUTHORED_SEED = {
 							tone: "no",
 							ref: "hx-pa",
 						},
+						groundcover: {
+							v: "Custom RUM events only",
+							tone: "partial",
+							ref: "gc-rum",
+						},
 					},
 				},
 				{
@@ -497,6 +943,11 @@ const AUTHORED_SEED = {
 							v: "Search + chart-based",
 							tone: "partial",
 							ref: "hx-alerts",
+						},
+						groundcover: {
+							v: "Grafana alerts",
+							tone: "yes",
+							ref: "gc-alerts",
 						},
 					},
 				},
@@ -554,6 +1005,11 @@ const AUTHORED_SEED = {
 							tone: "yes",
 							ref: "hx-correlation",
 						},
+						groundcover: {
+							v: "K8s-correlated signals",
+							tone: "partial",
+							ref: "gc-correlation",
+						},
 					},
 				},
 				{
@@ -600,6 +1056,10 @@ const AUTHORED_SEED = {
 							tone: "neutral",
 						},
 						hyperdx: {
+							v: "Product-specific",
+							tone: "neutral",
+						},
+						groundcover: {
 							v: "Product-specific",
 							tone: "neutral",
 						},
@@ -659,20 +1119,13 @@ const AUTHORED_SEED = {
 							tone: "partial",
 							ref: "hx-residency",
 						},
+						groundcover: {
+							v: "Data stays in your cloud",
+							tone: "yes",
+							ref: "gc-hosting",
+						},
 					},
 				},
-			],
-			agentRows: [
-				{ name: "Observability Unified", key: "obs" },
-				{ name: "Datadog", key: "datadog" },
-				{ name: "Sentry", key: "sentry" },
-				{ name: "PostHog", key: "posthog" },
-				{ name: "Honeycomb", key: "honeycomb" },
-				{ name: "New Relic", key: "newrelic" },
-				{ name: "Grafana Cloud", key: "grafana" },
-				{ name: "SigNoz", key: "signoz" },
-				{ name: "Uptrace", key: "uptrace" },
-				{ name: "HyperDX", key: "hyperdx" },
 			],
 		},
 	},
@@ -712,21 +1165,61 @@ const AUTHORED_SEED = {
 			"Compact, token-budgeted evidence returned by the CCR layer.",
 	},
 	capabilities: [
-		{ id: "traces", name: "Distributed tracing", status: "shipped" },
-		{ id: "logs", name: "Structured logs", status: "shipped" },
-		{ id: "usage", name: "Usage analytics", status: "shipped" },
-		{ id: "replay", name: "Session replay", status: "shipped" },
-		{ id: "ai", name: "AI / LLM observability", status: "shipped" },
-		{ id: "profiles", name: "Profiles (CPU/off-CPU)", status: "shipped" },
-		{ id: "alerts", name: "Alerts", status: "shipped" },
-		{ id: "user", name: "User profiles", status: "shipped" },
 		{
-			id: "deployment",
-			name: "Deployment and data ownership",
+			id: "traces",
+			name: "Distributed tracing",
 			status: "shipped",
 		},
-		{ id: "analyses", name: "Application-aware analyses", status: "shipped" },
-		{ id: "action-graph", name: "Agent Action Graph", status: "shipped" },
+		{
+			id: "logs",
+			name: "Structured logs",
+			status: "shipped",
+		},
+		{
+			id: "metrics",
+			name: "Metrics / infrastructure monitoring",
+			status: "shipped",
+		},
+		{
+			id: "usage",
+			name: "Usage analytics",
+			status: "shipped",
+		},
+		{
+			id: "replay",
+			name: "Session replay",
+			status: "shipped",
+		},
+		{
+			id: "ai",
+			name: "AI / LLM observability",
+			status: "shipped",
+		},
+		{
+			id: "profiles",
+			name: "Profiles (CPU/off-CPU)",
+			status: "shipped",
+		},
+		{
+			id: "alerts",
+			name: "Alerts",
+			status: "shipped",
+		},
+		{
+			id: "user",
+			name: "User profiles",
+			status: "shipped",
+		},
+		{
+			id: "analyses",
+			name: "Application-aware analyses",
+			status: "shipped",
+		},
+		{
+			id: "action-graph",
+			name: "Agent Action Graph",
+			status: "shipped",
+		},
 		{
 			id: "evidence-references",
 			name: "Agent-readable evidence references",
@@ -737,7 +1230,16 @@ const AUTHORED_SEED = {
 			name: "Evidence retrieval (CCR)",
 			status: "shipped",
 		},
-		{ id: "mcp", name: "MCP investigation server", status: "shipped" },
+		{
+			id: "mcp",
+			name: "MCP investigation server",
+			status: "shipped",
+		},
+		{
+			id: "deployment",
+			name: "Deployment and data ownership",
+			status: "shipped",
+		},
 	],
 	features: [
 		{
