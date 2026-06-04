@@ -308,6 +308,55 @@ shipped one. The CCR rollout is the proof: it shipped correctly in code and on
 three surfaces, and silently missed two — which is precisely the failure this
 system converts into a red CI check.
 
+## Comparison as a governed surface
+
+The landing-page comparison table is a distribution surface, but it is also a
+product-claim surface. It should not be hand-maintained separately from feature
+truth. A row like "Agent-readable evidence" is only honest if it is tied to the
+feature/capability record that proves obs-unified ships that behavior, and if
+the row's footnotes still land on the docs comparison anchors that explain the
+claim.
+
+This RFC therefore treats comparison rows as manifest-governed facts:
+
+```jsonc
+{
+  "id": "agent-readable-evidence",
+  "label": "Agent-readable evidence",
+  "featureId": "evidence-retrieval",
+  "docsAnchor": "ou-agent-readable-evidence",
+  "cells": {
+    "obs": {
+      "v": "Evidence refs + CCR refs",
+      "tone": "yes",
+      "ref": "ou-agent-readable-evidence"
+    },
+    "datadog": { "v": "Product-specific", "tone": "neutral" }
+  }
+}
+```
+
+Rules:
+
+- Every comparison axis lives in
+  `authored.positioning.comparison.axes`; the website renders rows from that
+  array rather than a local TypeScript constant.
+- Each axis may point at a `capabilityId` or `featureId`. If it does, the target
+  must exist and be `status: shipped` before the row can appear.
+- Every axis cell must exist for every vendor key in
+  `authored.positioning.comparison.agentRows`.
+- Every cell `ref` and axis `docsAnchor` must resolve to a `src-*` anchor in the
+  docs comparison page. Third-party factual claims remain subject to the
+  existing citation/right-of-reply workflow.
+- The docs comparison page remains the source for methodology, citations, and
+  correction logs. The manifest governs the landing-page row shape and how rows
+  tie back to shipped product facts.
+
+This gives comparison the same safety property as feature messaging: when a new
+agent-facing feature ships, adding a comparison row is a manifest change plus a
+docs anchor, and CI can tell whether the row is missing, unsupported, or
+uncited.
+
 ## Update workflow / Definition of done
 A contract/name/scope/status/feature change is "done" only when:
 1. the code change lands;
