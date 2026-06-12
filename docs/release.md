@@ -46,9 +46,8 @@ pnpm e2e:alerts
 
 Packages publish from the `Release` workflow on pushes to `main`. The workflow
 runs Changesets, opens or updates the release PR, and publishes after the
-generated release PR is merged. SDK packages publish to GitHub Packages;
-`@obsunified/mcp-server` publishes to npmjs so agents can install it without
-registry authentication.
+generated release PR is merged. Public JavaScript packages publish to npmjs so
+developers can install them without GitHub Packages authentication.
 
 The all-in-one local image publishes from the `Publish all-in-one image`
 workflow on pushes to `main`, tags, and manual dispatch. It requires
@@ -61,22 +60,18 @@ Before merging the release PR:
 
 - Confirm the generated changelogs describe the user-visible changes.
 - Confirm the package versions are intentional.
-- Confirm the workflow has `packages: write` and Node is configured for
-  `https://npm.pkg.github.com` with scope `@obs-unified`.
 - Confirm `NPM_TOKEN` is available before merging a release PR that publishes
-  `@obsunified/mcp-server` to npmjs.
+  public npm packages.
 - Confirm `OBS_UNIFIED_PACKAGES_TOKEN` is available when publishing or making
-  org-scoped GitHub Packages public requires a token beyond `GITHUB_TOKEN`.
+  the public GHCR image visible requires a token beyond `GITHUB_TOKEN`.
 
 ## Post-release
 
-- Install the public packages from a clean project using the documented GitHub
-  Packages `.npmrc` configuration.
-- Install the MCP server without GitHub Packages auth:
-  `pnpm add -g @obsunified/mcp-server`.
+- Install public packages from a clean project without registry overrides:
+  `pnpm add @obs-unified/telemetry-sdk @obs-unified/analytics-sdk`.
+- Install the MCP server: `pnpm add -g @obsunified/mcp-server`.
 - Pull the all-in-one image anonymously:
   `docker manifest inspect ghcr.io/obs-unified/local:latest`.
 - Smoke-test the collector health endpoint, dashboard login, and at least one
   SDK ingest path.
-- Check the GitHub Packages page for SDK packages and npmjs for
-  `@obsunified/mcp-server`.
+- Check npmjs for `@obs-unified/*` packages and `@obsunified/mcp-server`.
