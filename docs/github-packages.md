@@ -27,7 +27,9 @@ Go and Rust do not use npm:
 go get github.com/obs-unified/obs-unified/sdks/go@latest
 ```
 
-```toml
-[dependencies]
-obs-unified = { git = "https://github.com/obs-unified/obs-unified", package = "obs-unified" }
+```bash
+cargo add obs-unified
 ```
+
+Go availability is controlled by public Git tags in the form `sdks/go/vX.Y.Z`.
+Rust availability is controlled by the public crates.io package `obs-unified`.
